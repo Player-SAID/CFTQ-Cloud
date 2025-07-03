@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFTQ Cloud | 云安全引擎与解决方案</title>
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-color: #025EF4;
+            --secondary-color: #69D5EB;
+            --accent-color: #00ccff;
+            --text-color: white;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 标题样式 */
+        .header {
+            padding: 100px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .标题P标签 {
+            font-size: 42px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+            margin: 0 auto;
+            max-width: 800px;
+            line-height: 1.3;
+        }
+        
+        .header p::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto 40px;
+        }
+
+        /* 卡片样式 */
+        .section {
+            flex: 1 1 350px;
+            margin: 20px;
+            padding: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .section:hover::before {
+            transform: scaleX(1);
+        }
+
+        .section h2 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2 i {
+            margin-right: 15px;
+            color: white;
+        }
+
+        .section h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+            margin-top: 15px;
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+        }
+
+        .块内文字 {
+            font-size: 17px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+        
+        .section ul.块内文字 {
+            padding-left: 20px;
+        }
+        
+        .section ul.块内文字 li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        /* 链接样式 */
+        .链接样式 {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .链接样式 i {
+            margin-right: 8px;
+        }
+
+        .链接样式:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 204, 255, 0.2);
+        }
+
+        /* 图片样式 */
+        .section img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .section img:hover {
+            transform: scale(1.02);
+        }
+
+        /* 页脚样式 */
+        .footer-links {
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer-links ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 800px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .友链 {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 30px;
+        }
+        
+        .友链 i {
+            margin-right: 8px;
+        }
+
+        .友链:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .版权 {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .版权 a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .版权 a:hover {
+            text-decoration: underline;
+        }
+
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .header {
+                padding: 80px 20px;
+            }
+            
+            .标题P标签 {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .section {
+                flex: 1 1 100%;
+                margin: 15px 0;
+                min-height: auto;
+            }
+            
+            .header {
+                padding: 60px 20px;
+            }
+
+            .标题P标签 {
+                font-size: 28px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+            }
+
+            .块内文字 {
+                font-size: 16px;
+            }
+            
+            .footer-links ul {
+                flex-direction: column;
+            }
+            
+            .友链 {
+                margin: 5px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .标题P标签 {
+                font-size: 24px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div class="header">
+        <p class="标题P标签">CFTQ Cloud - 快速 稳定 安全的云安全解决方案</p>
+    </div>
+    
+    <div class="main-content">
+        <!-- 引擎介绍 -->
+        <div class="section">
+            <h2><i class="fas fa-shield-alt"></i>引擎介绍</h2>
+            <p class="块内文字">本引擎是由C Safe、Flyme Security、T Safety、Qike Security共同研发的新一代云安全引擎，具有极速响应、广泛覆盖的特点，可以帮助用户快捷稳定地扫描未知文件并分析其安全性，利用CFTQ云端病毒库进行匹配。</p>
+            <a href="download.html" target="_blank" class="链接样式"><i class="fas fa-download"></i>跳转至下载页面</a>
+        </div>
+
+        <!-- 授权使用 -->
+        <div class="section">
+            <h2><i class="fas fa-key"></i>授权使用</h2>
+            <p class="块内文字">本软件采用APIkey的方式进行验证，已确认授权软件有：</p>
+            <ul class="块内文字">
+                <li>C Safe</li>
+                <li>Flyme Security (XiaoWei Security)</li>
+                <li>T Safety</li>
+                <li>QiKe Security Software</li>
+                <li>布世洁炫安全软件</li>
+                <li>Xdows Security</li>
+            </ul>
+        </div>
+
+        <!-- 情报共享 -->
+        <div class="section">
+            <h2><i class="fas fa-network-wired"></i>情报共享</h2>
+            <p class="块内文字">CFTQ Cloud已加入共建云安全情报网络计划，能从多个安全情报共享共建厂商中获取情报，提升病毒查杀率，为用户提供优质的云安全解决方案。</p>
+            <a href="https://c.hezhongkj.top/" target="_blank" class="链接样式"><i class="fas fa-cloud"></i>猎剑文件鉴定云</a>
+            <p><img src="./1.png" alt="云安全网络共建计划" style="width: 100%; height: auto;"></p>
+        </div>
+
+        <!-- 样本上报 -->
+        <div class="section">
+            <h2><i class="fas fa-bug"></i>样本上报</h2>
+            <p class="块内文字">如果您发现有已知的病毒CFTQ云安全引擎无法检出，请通过以下方式上报样本：</p>
+            <ul class="块内文字">
+                <li>通过猎剑文件鉴定云上报可疑样本</li>
+                <li>通过样本上报群进行上报</li>
+            </ul>
+            <a href="https://c.hezhongkj.top" target="_blank" class="链接样式"><i class="fas fa-upload"></i>猎剑文件鉴定云</a>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-links">
+            <ul>
+                <a href="https://c.hezhongkj.top/#" target="_blank" class="友链"><i class="fas fa-project-diagram"></i>云安全情报网络计划</a>
+                <a href="https://c.hezhongkj.top/#" target="_blank" class="友链"><i class="fas fa-shield-virus"></i>猎剑文件鉴定云</a>
+                <a href="./faq.html" class="友链"><i class="fas fa-question-circle"></i>常见问题</a>
+            </ul>
+        </div>
+        <p class="版权">&copy; 2025 CFTQ Cloud. 保留所有权利。<br>Created by <a href="#" target="_blank">CFTQ Cloud</a></p>
+    </footer>
+    
+    <script>
+        // 加载动画脚本
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
