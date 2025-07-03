@@ -272,6 +272,35 @@
             text-decoration: underline;
         }
 
+        /* GitHub按钮样式 */
+        .github-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .github-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-color);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 204, 255, 0.3);
+        }
+
         /* 加载动画 */
         .loader {
             position: fixed;
@@ -358,6 +387,14 @@
             .section {
                 padding: 20px;
             }
+            
+            .github-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                bottom: 15px;
+                right: 15px;
+            }
         }
     </style>
 </head>
@@ -366,6 +403,11 @@
     <div class="loader">
         <div class="loader-spinner"></div>
     </div>
+
+    <!-- GitHub按钮 -->
+    <a href="https://github.com/Player-SAID/CFTQ-Cloud" target="_blank" class="github-btn" title="查看GitHub仓库">
+        <i class="fab fa-github"></i>
+    </a>
 
     <div class="header">
         <p class="标题P标签">CFTQ Cloud - 快速 稳定 安全的云安全解决方案</p>
