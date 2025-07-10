@@ -587,9 +587,69 @@
                 padding: 2rem 1rem;
             }
         }
+    
+    .warning-banner {
+        background-color: #ff9800;
+        color: #fff;
+        padding: 12px 0;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        animation: pulse 2s infinite;
+    }
+    
+    .warning-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .warning-link {
+        color: #fff;
+        font-weight: bold;
+        text-decoration:none
+    }
+    
+    .warning-button {
+        background-color: #fff;
+        color: #ff9800;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .warning-button:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+    
+    @keyframes pulse {
+        0% { background-color: #ff9800; }
+        50% { background-color: #ff5722; }
+        100% { background-color: #ff9800; }
+    }
     </style>
 </head>
 <body>
+    <div class="warning-banner">
+    <div class="warning-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>托管于Github的CFTQ Cloud的网页在线扫描页面无法上传文件，请转至</span>
+        <a href="https://cftq.ternaryop.top/os.html" class="warning-link">托管于TO的服务器网站</a>
+        <button class="warning-button" onclick="window.location.href='https://cftq.ternaryop.top/os.html'">
+            立即跳转
+        </button>
+    </div>
+</div>
     <!-- 导航栏 -->
     <header>
         <div class="header-container">
