@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFTQ Cloud - 客户端下载</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00f0ff;
+            --secondary-color: #0066ff;
+            --dark-bg: #0a0e17;
+            --darker-bg: #050a14;
+            --text-light: #e0e0e0;
+            --text-lighter: #ffffff;
+            --card-bg: rgba(15, 23, 42, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 导航栏 */
+        header {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, rgba(10,14,23,0.9) 100%);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+        
+        .logo p {
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            opacity: 0.8;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li a i {
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* 主要内容区域 */
+        .hero {
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--text-lighter), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.9rem 2.2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--darker-bg);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0.5rem;
+        }
+        
+        .cta-button i {
+            margin-right: 0.7rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+        }
+        
+        .secondary-button {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            box-shadow: none;
+        }
+        
+        .secondary-button:hover {
+            background: rgba(0, 240, 255, 0.1);
+        }
+    
+        /* 网格背景 */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+        
+        /* 下载区域 */
+        .download-section {
+            max-width: 1200px;
+            margin: -5rem auto 5rem;
+            padding: 0 2rem;
+        }
+        
+        .download-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+        
+        .download-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+        
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 240, 255, 0.1);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+        
+        .download-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .download-card h2 i {
+            margin-right: 1rem;
+            font-size: 2rem;
+        }
+        
+        .download-card p {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .download-options {
+            margin-top: 2rem;
+        }
+        
+        .platform-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(0, 240, 255, 0.05);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .platform-option:hover {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+        
+        .platform-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .platform-info i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .platform-name {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+        }
+        
+        .download-link {
+            padding: 0.5rem 1.2rem;
+            background: rgba(0, 240, 255, 0.2);
+            color: var(--primary-color);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            font-size: 0.85rem;
+        }
+        
+        .download-link:hover {
+            background: rgba(0, 240, 255, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .version-info {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+        
+        /* 命令行样式 */
+        .command-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--primary-color);
+            font-family: monospace;
+            text-align: left;
+            position: relative;
+        }
+        
+        .command-box .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 3px;
+            padding: 0.2rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        
+        .command-box .copy-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+        }
+        
+        /* 页脚 */
+        footer {
+            background: linear-gradient(to bottom, rgba(10,14,23,0.8), var(--darker-bg));
+            padding: 3rem 0;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-logo {
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-links h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+            opacity: 1;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .logo p {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0.8rem;
+            }
+            
+            .hero {
+                height: 50vh;
+            }
+            
+            .hero h2 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .download-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-card {
+                padding: 1.5rem;
+            }
+            
+            .cta-button {
+                margin: 0.5rem 0;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>CFTQ Cloud</h1>
+                <p>快速 稳定 安全的云安全解决方案</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="./index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="./download.html"><i class="fas fa-download"></i> 客户端下载</a></li>
+                    <li><a href="./os.html"><i class="fas fa-search"></i> 在线扫描</a></li>
+                    <li><a href="./API.html"><i class="fas fa-code"></i> 获取API</a></li>
+                    <li><a href="./faq.html"><i class="fas fa-question-circle"></i> 常见问题</a></li>
+                    <li><a href="./about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="grid-bg"></div>
+            <div class="hero-content">
+                <h2>下载CFTQ Cloud客户端</h2>
+                <p>选择适合您需求的版本，立即体验强大的云安全防护能力</p>
+                <div>
+                    <a href="#cli" class="cta-button secondary-button"><i class="fas fa-terminal"></i> 命令行工具</a>
+                    <a href="#web" class="cta-button"><i class="fas fa-globe"></i> 网页端</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="download-section">
+            <div class="download-container">
+                <!-- 命令行工具 -->
+                <div id="cli" class="download-card">
+                    <h2><i class="fas fa-terminal"></i> Windows命令行工具</h2>
+                    <p>专为Windows用户设计的轻量级命令行界面，提供强大的脚本集成能力</p>
+                    
+                    <div class="download-options">
+                        <div class="platform-option">
+                            <div class="platform-info">
+                                <i class="fab fa-windows"></i>
+                                <div>
+                                    <div class="platform-name">Windows 命令行版</div>
+                                    <div class="version-info">v2.3.1 | 12.5 MB</div>
+                                </div>
+                            </div>
+                            <a href="#" class="download-link">下载 <i class="fas fa-download"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 网页端 -->
+                <div id="web" class="download-card">
+                    <h2><i class="fas fa-globe"></i> 网页端</h2>
+                    <p>无需安装，直接在浏览器中使用CFTQ Cloud的全部功能</p>
+                    
+                    <div style="margin-top: 3rem;">
+                        <a href="./os.html" class="cta-button" style="display: inline-flex; width: auto;"><i class="fas fa-external-link-alt"></i> 立即使用网页版</a>
+                    </div>
+                    
+                    <div style="margin-top: 3rem; text-align: left;">
+                        <h3 style="font-family: 'Orbitron'; color: var(--primary-color); margin-bottom: 1rem;">网页端功能</h3>
+                        <ul style="list-style-type: none;">
+                            <li style="margin-bottom: 0.8rem; display: flex; align-items: flex-start;">
+                                <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                <span>文件上传扫描</span>
+                            </li>
+                            <li style="margin-bottom: 0.8rem; display: flex; align-items: flex-start;">
+                                <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                <span>URL安全检测</span>
+                            </li>
+                            <li style="margin-bottom: 0.8rem; display: flex; align-items: flex-start;">
+                                <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                <span>扫描历史记录</span>
+                            </li>
+                            <li style="margin-bottom: 0.8rem; display: flex; align-items: flex-start;">
+                                <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                <span>可视化报告</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; text-align: left;">
+                        <h3 style="font-family: 'Orbitron'; color: var(--primary-color); margin-bottom: 1rem;">浏览器支持</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                            <div style="display: flex; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 0.5rem 1rem; border-radius: 4px;">
+                                <i class="fab fa-chrome" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                <span>Chrome</span>
+                            </div>
+                            <div style="display: flex; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 0.5rem 1rem; border-radius: 4px;">
+                                <i class="fab fa-firefox" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                <span>Firefox</span>
+                            </div>
+                            <div style="display: flex; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 0.5rem 1rem; border-radius: 4px;">
+                                <i class="fab fa-edge" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                <span>Edge</span>
+                            </div>
+                            <div style="display: flex; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 0.5rem 1rem; border-radius: 4px;">
+                                <i class="fab fa-safari" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                <span>Safari</span>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <h3>快速链接</h3>
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="./download.html">客户端下载</a></li>
+                    <li><a href="./os.html">在线扫描</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>开发资源</h3>
+                <ul>
+                    <li><a href="./API.html">API文档</a></li>
+                    <li><a href="#">开发指南</a></li>
+                    <li><a href="#">SDK下载</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>支持</h3>
+                <ul>
+                    <li><a href="./faq.html">常见问题</a></li>
+                    <li><a href="#">帮助中心</a></li>
+                    <li><a href="#">联系我们</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>关于</h3>
+                <ul>
+                    <li><a href="./About.html">简介</a></li>
+                    <li><a href="#">隐私政策</a></li>
+                    <li><a href="#">服务条款</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p class="copyright">&copy; 2025 CFTQ Cloud. 保留所有权利。<br>Created by CFTQ Cloud</p>
+        </div>
+    </footer>
+    
+    <script>
+        // 复制命令到剪贴板
+        function copyToClipboard(button) {
+            const commandBox = button.parentElement;
+            const code = commandBox.querySelector('code').textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = '已复制!';
+                setTimeout(() => {
+                    button.textContent = '复制';
+                }, 2000);
+            });
+        }
+        
+        // 卡片动画效果
+        const downloadCards = document.querySelectorAll('.download-card');
+        downloadCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
