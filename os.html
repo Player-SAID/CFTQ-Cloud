@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFTQ Cloud - 在线扫描</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00f0ff;
+            --secondary-color: #0066ff;
+            --dark-bg: #0a0e17;
+            --darker-bg: #050a14;
+            --text-light: #e0e0e0;
+            --text-lighter: #ffffff;
+            --card-bg: rgba(15, 23, 42, 0.7);
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 导航栏 */
+        header {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, rgba(10,14,23,0.9) 100%);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul li a i {
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        /* 主要内容区域 */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--text-lighter), var(--primary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        /* 上传区域 */
+        .upload-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .file-input-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(0, 240, 255, 0.3);
+            border-radius: 10px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: rgba(0, 240, 255, 0.05);
+            position: relative;
+        }
+        
+        .file-input-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+        
+        .file-input-area i {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-input-area p {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .file-input-area span {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        #fileInput {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        /* 文件列表 */
+        .file-list {
+            margin: 1.5rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            background: rgba(0, 240, 255, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-item:hover {
+            background: rgba(0, 240, 255, 0.1);
+        }
+        
+        .file-item.uploading {
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .file-item.safe {
+            border-left: 3px solid var(--success-color);
+            background: rgba(76, 175, 80, 0.05);
+        }
+        
+        .file-item.malware {
+            border-left: 3px solid var(--warning-color);
+            background: rgba(255, 152, 0, 0.05);
+        }
+        
+        .file-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 1rem;
+            z-index: 2;
+        }
+        
+        .file-size {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            margin-right: 1rem;
+            z-index: 2;
+        }
+        
+        .file-status {
+            font-size: 0.85rem;
+            z-index: 2;
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .file-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: rgba(0, 240, 255, 0.1);
+            transition: width 0.4s ease;
+            z-index: 1;
+        }
+        
+        .file-item.safe .file-progress {
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .file-item.malware .file-progress {
+            background: rgba(255, 152, 0, 0.1);
+        }
+        
+        /* 选项区域 */
+        .options-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .option-group {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .option-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 0.8rem 0;
+            padding-left: 2rem;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 20px;
+            width: 20px;
+            background-color: rgba(0, 240, 255, 0.05);
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-container:hover .checkmark {
+            background-color: rgba(0, 240, 255, 0.1);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 4px;
+            height: 9px;
+            border: solid var(--darker-bg);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .mode-info {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 240, 255, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .mode-info p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mode-info p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* 上传按钮 */
+        .upload-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--darker-bg);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.3);
+            margin: 1.5rem 0;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.4);
+        }
+        
+        .upload-btn:active {
+            transform: translateY(0);
+        }
+        
+        .upload-btn:disabled {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.5), rgba(0, 102, 255, 0.5));
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 进度条 */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        
+        .malware-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--warning-color);
+            width: 0%;
+            transition: width 0.4s ease;
+            mix-blend-mode: lighten;
+        }
+        
+        /* 摘要统计 */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .summary-item {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        
+        .summary-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+        }
+        
+        .summary-total .summary-value {
+            color: var(--primary-color);
+        }
+        
+        .summary-safe .summary-value {
+            color: var(--success-color);
+        }
+        
+        .summary-malware .summary-value {
+            color: var(--warning-color);
+        }
+        
+        /* 状态指示器 */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin: 1rem 0;
+        }
+        
+        /* 结果区域 */
+        .results-section {
+            margin-top: 2rem;
+        }
+        
+        .results-container {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .results-textarea {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-light);
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: none;
+            overflow-y: auto;
+        }
+        
+        .results-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem 0.8rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .options-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .file-input-area {
+                padding: 2rem 1rem;
+            }
+        }
+    
+    .warning-banner {
+        background-color: #ff9800;
+        color: #fff;
+        padding: 12px 0;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        animation: pulse 2s infinite;
+    }
+    
+    .warning-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .warning-link {
+        color: #fff;
+        font-weight: bold;
+        text-decoration:none
+    }
+    
+    .warning-button {
+        background-color: #fff;
+        color: #ff9800;
+        border: none;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .warning-button:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+    }
+    
+    @keyframes pulse {
+        0% { background-color: #ff9800; }
+        50% { background-color: #ff5722; }
+        100% { background-color: #ff9800; }
+    }
+    </style>
+</head>
+<body>
+    <div class="warning-banner">
+    <div class="warning-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>托管于Github的CFTQ Cloud的网页在线扫描页面无法上传文件，请转至</span>
+        <a href="https://cftq.ternaryop.top/os.html" class="warning-link">托管于TO的服务器网站</a>
+        <button class="warning-button" onclick="window.location.href='https://cftq.ternaryop.top/os.html'">
+            立即跳转
+        </button>
+    </div>
+</div>
+    <!-- 导航栏 -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>CFTQ Cloud</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="./index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="./download.html"><i class="fas fa-download"></i> 客户端下载</a></li>
+                    <li><a href="./os.html"><i class="fas fa-search"></i> 在线扫描</a></li>
+                    <li><a href="./API.html"><i class="fas fa-code"></i> 获取API</a></li>
+                    <li><a href="./faq.html"><i class="fas fa-question-circle"></i> 常见问题</a></li>
+                    <li><a href="./about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="page-header">
+            <h1>
+                <i class="fas fa-shield-alt"></i>
+                CFTQ文件在线扫描
+            </h1>
+            <p>使用CFTQ云查杀引擎对文件进行安全扫描</p>
+        </div>
+        
+        <div class="upload-section">
+            <h2 class="section-title">
+                <i class="fas fa-file-upload"></i>
+                选择扫描文件
+            </h2>
+            
+            <div class="file-input-area" id="dropArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>点击或拖放文件到此处上传</p>
+                <span>支持多文件选择(单个文件最大200MB)</span>
+                <input type="file" id="fileInput" multiple>
+            </div>
+            
+            <div class="file-list" id="fileList">
+                <!-- 文件列表将在这里动态生成 -->
+            </div>
+        </div>
+        
+        <div class="options-section">
+            <div class="option-group">
+                <h3 class="option-title">
+                    <i class="fas fa-cogs"></i>
+                    扫描引擎设置
+                </h3>
+                
+                <label class="checkbox-container">
+                    <input type="checkbox" id="lsProtect">
+                    <span class="checkmark"></span>
+                    开启LSProtect敏感模式
+                </label>
+                
+                <label class="checkbox-container">
+                    <input type="checkbox" id="bitProtect">
+                    <span class="checkmark"></span>
+                    开启BITProtect敏感模式
+                </label>
+                
+                <label class="checkbox-container">
+                    <input type="checkbox" id="fastMode" checked>
+                    <span class="checkmark"></span>
+                    开启快速扫描模式
+                </label>
+                
+                <div class="mode-info">
+                    <p><i class="fas fa-exclamation-triangle"></i> 敏感模式将提高扫描精度，但会导致误报率上升</p>
+                    <p><i class="fas fa-bolt"></i> 快速模式：减少重复检测，可能影响部分引擎结果</p>
+                </div>
+            </div>
+            
+            <div class="option-group">
+                <h3 class="option-title">
+                    <i class="fas fa-info-circle"></i>
+                    扫描说明
+                </h3>
+                <p><i class="fas fa-check-circle"></i> 选择扫描模式后，点击"开始安全扫描"按钮</p>
+                <p><i class="fas fa-check-circle"></i> 扫描完成后，结果将显示在页面底部</p>
+                <p><i class="fas fa-check-circle"></i> 由于服务器算力原因，上传文件后可能需要数秒时间扫描</p>
+                <p><i class="fas fa-check-circle"></i> 快速模式不影响扫描结果，为减轻服务器压力，非调试请开启快速模式</p>
+            </div>
+        </div>
+        
+        <button id="uploadBtn" class="upload-btn" disabled>
+            <i class="fas fa-paper-plane"></i>
+            开始上传
+        </button>
+        
+        <div class="progress-container">
+            <div class="malware-indicator" id="malwareIndicator"></div>
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-item summary-total">
+                <div>总文件数</div>
+                <div class="summary-value" id="totalFiles">0</div>
+            </div>
+            <div class="summary-item summary-safe">
+                <div>安全文件</div>
+                <div class="summary-value" id="safeFiles">0</div>
+            </div>
+            <div class="summary-item summary-malware">
+                <div>恶意文件</div>
+                <div class="summary-value" id="malwareFiles">0</div>
+            </div>
+        </div>
+        
+        <div class="status-indicator">
+            <i class="fas fa-info-circle"></i>
+            <span id="statusText">请选择要扫描的文件</span>
+        </div>
+        
+        <div class="results-section">
+            <h2 class="section-title">
+                <i class="fas fa-file-alt"></i>
+                扫描结果
+            </h2>
+            
+            <div class="results-container">
+                <textarea class="results-textarea" id="resultsArea" readonly></textarea>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>CFTQ Cloud &copy; 2025 | Created by CFTQ Cloud</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const dropArea = document.getElementById('dropArea');
+            const fileList = document.getElementById('fileList');
+            const lsProtect = document.getElementById('lsProtect');
+            const bitProtect = document.getElementById('bitProtect');
+            const fastMode = document.getElementById('fastMode');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const resultsArea = document.getElementById('resultsArea');
+            const statusText = document.getElementById('statusText');
+            const progressBar = document.getElementById('progressBar');
+            const malwareIndicator = document.getElementById('malwareIndicator');
+            const totalFilesEl = document.getElementById('totalFiles');
+            const safeFilesEl = document.getElementById('safeFiles');
+            const malwareFilesEl = document.getElementById('malwareFiles');
+
+            let files = [];
+            let totalFiles = 0;
+            let safeFiles = 0;
+            let malwareFiles = 0;
+            let totalBytes = 0;
+            let uploadedBytes = 0;
+
+            // 点击区域触发文件选择
+            dropArea.addEventListener('click', (e) => {
+                if (e.target !== fileInput) {
+                    fileInput.click();
+                }
+            });
+
+            // 拖放功能
+            dropArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropArea.style.borderColor = 'var(--primary-color)';
+                dropArea.style.backgroundColor = 'rgba(0, 240, 255, 0.1)';
+            });
+
+            dropArea.addEventListener('dragleave', () => {
+                dropArea.style.borderColor = 'rgba(0, 240, 255, 0.3)';
+                dropArea.style.backgroundColor = 'rgba(0, 240, 255, 0.05)';
+            });
+
+            dropArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropArea.style.borderColor = 'rgba(0, 240, 255, 0.3)';
+                dropArea.style.backgroundColor = 'rgba(0, 240, 255, 0.05)';
+
+                if (e.dataTransfer.files.length) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
+
+            // 文件选择处理
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleFiles(fileInput.files);
+                }
+            });
+
+            function handleFiles(selectedFiles) {
+                files = Array.from(selectedFiles);
+                fileList.innerHTML = '';
+                totalBytes = 0;
+
+                files.forEach(file => {
+                    totalBytes += file.size;
+                    
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item uploading';
+                    fileItem.dataset.filename = file.name;
+                    fileItem.dataset.size = file.size;
+
+                    const fileProgress = document.createElement('div');
+                    fileProgress.className = 'file-progress';
+                    fileItem.appendChild(fileProgress);
+
+                    const fileName = document.createElement('div');
+                    fileName.className = 'file-name';
+                    fileName.textContent = file.name;
+                    fileItem.appendChild(fileName);
+
+                    const fileSize = document.createElement('div');
+                    fileSize.className = 'file-size';
+                    fileSize.textContent = formatFileSize(file.size);
+                    fileItem.appendChild(fileSize);
+
+                    const fileStatus = document.createElement('div');
+                    fileStatus.className = 'file-status';
+                    fileStatus.textContent = '等待上传';
+                    fileItem.appendChild(fileStatus);
+
+                    fileList.appendChild(fileItem);
+                });
+
+                uploadBtn.disabled = files.length === 0;
+                statusText.textContent = `已选择 ${files.length} 个文件，准备上传`;
+                totalFiles = files.length;
+                totalFilesEl.textContent = totalFiles;
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // 上传文件
+            uploadBtn.addEventListener('click', async () => {
+                if (files.length === 0) return;
+
+                uploadBtn.disabled = true;
+                statusText.textContent = '正在上传文件...';
+                progressBar.style.width = '0%';
+                malwareIndicator.style.width = '0%';
+                resultsArea.value = '';
+                safeFiles = 0;
+                malwareFiles = 0;
+                uploadedBytes = 0;
+                safeFilesEl.textContent = safeFiles;
+                malwareFilesEl.textContent = malwareFiles;
+
+                const lsSelected = lsProtect.checked;
+                const bitSelected = bitProtect.checked;
+                const fastSelected = fastMode.checked;
+
+                // 构建参数
+                let params = [];
+                if (lsSelected) {
+                    params.push('highsense=lsprotect');
+                }
+                if (bitSelected) {
+                    params.push('highsense=bitprotect');
+                }
+                if (fastSelected) {
+                    params.push('fast_mode=enable');
+                }
+                const queryString = params.length > 0 ? '?' + params.join('&') : '';
+
+                // 创建上传队列
+                const uploadQueue = [...files];
+                let currentUpload = null;
+                
+                // 顺序处理文件上传
+                const uploadNextFile = async () => {
+                    if (uploadQueue.length === 0) {
+                        statusText.textContent = `扫描完成！已处理 ${files.length} 个文件`;
+                        uploadBtn.disabled = false;
+                        return;
+                    }
+                    
+                    const file = uploadQueue.shift();
+                    const fileItem = document.querySelector(`.file-item[data-filename="${file.name}"]`);
+                    
+                    if (fileItem) {
+                        fileItem.querySelector('.file-status').textContent = '上传中: 0.000%';
+                    }
+                    
+                    try {
+                        // 直接发送文件内容，不包含额外边界
+                        const response = await uploadFile(file, queryString, (progress) => {
+                            if (fileItem) {
+                                fileItem.querySelector('.file-status').textContent = `上传中: ${progress}%`;
+                                fileItem.querySelector('.file-progress').style.width = `${progress}%`;
+                            }
+                            
+                            // 更新总进度
+                            const totalPercent = (uploadedBytes / totalBytes * 100).toFixed(3);
+                            progressBar.style.width = `${totalPercent}%`;
+                            statusText.textContent = `上传中: ${totalPercent}%`;
+                        });
+                        
+                        // 解析响应
+                        let jsonResponse;
+                        try {
+                            jsonResponse = JSON.parse(response);
+                        } catch (e) {
+                            throw new Error('无效的JSON响应');
+                        }
+
+                        // 更新文件状态
+                        if (fileItem) {
+                            const status = jsonResponse.result === 'safe' ? 'safe' : 'malware';
+                            fileItem.classList.remove('uploading');
+                            fileItem.classList.add(status);
+
+                            if (status === 'safe') {
+                                fileItem.querySelector('.file-status').textContent = '安全';
+                                safeFiles++;
+                                safeFilesEl.textContent = safeFiles;
+                            } else {
+                                fileItem.querySelector('.file-status').textContent = '恶意';
+                                malwareFiles++;
+                                malwareFilesEl.textContent = malwareFiles;
+
+                                // 更新恶意文件指示器
+                                const malwarePercent = (malwareFiles / totalFiles * 100).toFixed(0);
+                                malwareIndicator.style.width = `${malwarePercent}%`;
+                            }
+                        }
+
+                        // 显示结果
+                        resultsArea.value += `${file.name}:\n`;
+                        resultsArea.value += response;
+                        resultsArea.value += '\n\n';
+                        
+                        // 滚动到底部
+                        resultsArea.scrollTop = resultsArea.scrollHeight;
+                        
+                        // 上传下一个文件
+                        uploadNextFile();
+                    } catch (error) {
+                        handleUploadError(fileItem, error.message);
+                        // 继续上传下一个文件
+                        uploadNextFile();
+                    }
+                };
+                
+                // 开始上传队列
+                uploadNextFile();
+            });
+
+            // 上传文件函数（解决边界问题）
+            async function uploadFile(file, queryString, progressCallback) {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    const url = '/scan' + queryString;
+                    
+                    xhr.open('POST', url, true);
+                    
+                    // 直接发送文件内容，不设置Content-Type
+                    // 这可以避免浏览器添加边界信息
+                    
+                    // 监听上传进度
+                    xhr.upload.addEventListener('progress', (event) => {
+                        if (event.lengthComputable) {
+                            const percent = (event.loaded / event.total * 100).toFixed(3);
+                            // 更新当前文件上传的字节数
+                            const fileUploaded = event.loaded;
+                            const prevUploaded = uploadedBytes;
+                            uploadedBytes = prevUploaded + (fileUploaded - (file.uploaded || 0));
+                            file.uploaded = fileUploaded;
+                            
+                            // 调用进度回调
+                            progressCallback(percent);
+                        }
+                    });
+                    
+                    // 监听完成事件
+                    xhr.onload = function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            resolve(xhr.responseText);
+                        } else {
+                            reject(new Error(`服务器错误: ${xhr.status} ${xhr.statusText}`));
+                        }
+                    };
+                    
+                    // 监听错误事件
+                    xhr.onerror = function() {
+                        reject(new Error('上传失败'));
+                    };
+                    
+                    // 发送文件（直接发送Blob）
+                    xhr.send(file);
+                    
+                    // 初始化文件上传状态
+                    file.uploaded = 0;
+                });
+            }
+
+            function handleUploadError(fileItem, errorMessage) {
+                if (fileItem) {
+                    fileItem.classList.remove('uploading');
+                    fileItem.classList.add('malware');
+                    fileItem.querySelector('.file-status').textContent = '错误';
+                    fileItem.querySelector('.file-progress').style.width = '100%';
+                    
+                    malwareFiles++;
+                    malwareFilesEl.textContent = malwareFiles;
+                    
+                    // 更新恶意文件指示器
+                    const malwarePercent = (malwareFiles / totalFiles * 100).toFixed(0);
+                    malwareIndicator.style.width = `${malwarePercent}%`;
+                }
+                
+                resultsArea.value += `${fileItem?.dataset.filename || '未知文件'}:\n`;
+                resultsArea.value += `错误: ${errorMessage}\n\n`;
+                
+                // 滚动到底部
+                resultsArea.scrollTop = resultsArea.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
